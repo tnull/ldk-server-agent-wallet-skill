@@ -1,0 +1,14 @@
+[node]
+network = "bitcoin"
+rest_service_address = "127.0.0.1:3032"
+
+[storage.disk]
+dir_path = "./data"
+
+[esplora]
+server_url = "https://mempool.bitcoin.ninja/api"
+
+#[liquidity.lsps2_client]
+#node_pubkey = "<lsp node pubkey>"
+#address = "127.0.0.1:9735"
+#token = ""

@@ -1,0 +1,34 @@
+# CLAUDE.md
+
+This repository is a reusable runtime bundle for `ldk-server` plus `ldk-server-mcp`.
+
+## Purpose
+
+- Provide a clean, isolated folder layout for an agent-controlled Lightning wallet.
+- Document how to build and install the required upstream binaries.
+- Keep a reusable launcher script checked in so future agents can bootstrap the same setup.
+
+## Repository layout
+
+- `config.example.toml` - template `ldk-server` configuration
+- `run-ldk-server-mcp` - launcher that starts `ldk-server` if needed, exports MCP env vars, and execs `ldk-server-mcp`
+- `SKILL.md` - step-by-step agent workflow for reproducing the setup
+- `bin/` - local binary install target, ignored in git except for `.gitkeep`
+- `data/` - runtime state directory, ignored in git except for `.gitkeep`
+- `run/` - pid and lock files, ignored in git except for `.gitkeep`
+
+## Important conventions
+
+- Do not commit real `config.toml`, TLS material, API keys, or database files.
+- Ask the user for an Esplora server. If they do not provide one, default to `https://mempool.bitcoin.ninja/api`.
+- Ask the user for LSPS2 client details. If they do not provide them, leave the `[liquidity.lsps2_client]` section commented out.
+- Upstream repositories to use:
+  - `https://github.com/lightningdevkit/ldk-server`
+  - `https://github.com/tnull/ldk-server-mcp`
+
+## Common commands
+
+```bash
+cp config.example.toml config.toml
+./run-ldk-server-mcp
+```

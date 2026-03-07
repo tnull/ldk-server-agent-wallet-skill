@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+BIN_DIR="$ROOT_DIR/bin"
+CONFIG_PATH="$ROOT_DIR/config.toml"
+RUN_DIR="$ROOT_DIR/run"
+PID_FILE="$RUN_DIR/ldk-server.pid"
+LOCK_DIR="$RUN_DIR/start.lock"
+NETWORK="bitcoin"
+NETWORK_DIR="$ROOT_DIR/data/$NETWORK"
+TLS_CERT_PATH="$ROOT_DIR/data/tls.crt"
+API_KEY_FILE="$NETWORK_DIR/api_key"
+BASE_URL="127.0.0.1:3032"
+
+port_open() {
+	if timeout 1 bash -lc "exec 3<>/dev/tcp/127.0.0.1/3032" >/dev/null 2>&1; then
+		return 0
+	fi
+	return 1
+}
+
+read_api_key_hex() {
+	if command -v xxd >/dev/null 2>&1; then
+		xxd -p -c 256 "$API_KEY_FILE" | tr -d '\n'
+	else
+		od -An -tx1 -v "$API_KEY_FILE" | tr -d ' \n'
+	fi
+}
+
+wait_for_server() {
+	for _ in $(seq 1 90); do
+		if [[ -f "$TLS_CERT_PATH" && -f "$API_KEY_FILE" ]] && port_open; then
+			return 0
+		fi
+		sleep 1
+	done
+
+	return 1
+}
+
+mkdir -p "$BIN_DIR" "$RUN_DIR" "$ROOT_DIR/data"
+
+if [[ ! -x "$BIN_DIR/ldk-server" || ! -x "$BIN_DIR/ldk-server-mcp" ]]; then
+	echo "Missing required binaries under $BIN_DIR" >&2
+	exit 1
+fi
+
+if [[ ! -f "$CONFIG_PATH" ]]; then
+	echo "Missing $CONFIG_PATH; copy config.example.toml to config.toml first" >&2
+	exit 1
+fi
+
+cd "$ROOT_DIR"
+
+if ! port_open; then
+	while ! mkdir "$LOCK_DIR" >/dev/null 2>&1; do
+		sleep 0.2
+	done
+	trap 'rmdir "$LOCK_DIR" >/dev/null 2>&1 || true' EXIT
+
+	if ! port_open; then
+		if [[ -f "$PID_FILE" ]]; then
+			stale_pid=$(cat "$PID_FILE")
+			if [[ -n "$stale_pid" ]] && ! kill -0 "$stale_pid" >/dev/null 2>&1; then
+				rm -f "$PID_FILE"
+			fi
+		fi
+
+		nohup "$BIN_DIR/ldk-server" "$CONFIG_PATH" >/dev/null 2>&1 &
+		echo $! >"$PID_FILE"
+	fi
+
+	if ! wait_for_server; then
+		echo "Failed to start ldk-server at $BASE_URL" >&2
+		exit 1
+	fi
+fi
+
+if [[ ! -f "$TLS_CERT_PATH" || ! -f "$API_KEY_FILE" ]]; then
+	echo "Missing generated TLS certificate or API key under $NETWORK_DIR" >&2
+	exit 1
+fi
+
+export LDK_BASE_URL="$BASE_URL"
+export LDK_API_KEY="$(read_api_key_hex)"
+export LDK_TLS_CERT_PATH="$TLS_CERT_PATH"
+
+exec "$BIN_DIR/ldk-server-mcp" "$@"
