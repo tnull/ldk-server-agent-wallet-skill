@@ -7,11 +7,47 @@ CONFIG_PATH="$ROOT_DIR/config.toml"
 RUN_DIR="$ROOT_DIR/run"
 PID_FILE="$RUN_DIR/ldk-server.pid"
 LOCK_DIR="$RUN_DIR/start.lock"
-NETWORK="bitcoin"
-NETWORK_DIR="$ROOT_DIR/data/$NETWORK"
-TLS_CERT_PATH="$ROOT_DIR/data/tls.crt"
-API_KEY_FILE="$NETWORK_DIR/api_key"
 BASE_URL="127.0.0.1:3032"
+
+expand_path() {
+	local path="$1"
+	if [[ "$path" == ~* ]]; then
+		printf '%s\n' "${path/#\~/$HOME}"
+	else
+		printf '%s\n' "$path"
+	fi
+}
+
+config_value() {
+	local field="$1"
+	python3 - "$CONFIG_PATH" "$field" <<'PY'
+import pathlib
+import sys
+
+config_path = pathlib.Path(sys.argv[1])
+field = sys.argv[2]
+
+try:
+    import tomllib
+except ModuleNotFoundError:
+    sys.exit(0)
+
+try:
+    with config_path.open('rb') as f:
+        data = tomllib.load(f)
+except Exception:
+    sys.exit(0)
+
+value = data
+for part in field.split('.'):
+    if not isinstance(value, dict) or part not in value:
+        sys.exit(0)
+    value = value[part]
+
+if isinstance(value, str):
+    print(value)
+PY
+}
 
 port_open() {
 	if timeout 1 bash -lc "exec 3<>/dev/tcp/127.0.0.1/3032" >/dev/null 2>&1; then
@@ -39,8 +75,6 @@ wait_for_server() {
 	return 1
 }
 
-mkdir -p "$BIN_DIR" "$RUN_DIR" "$ROOT_DIR/data"
-
 if [[ ! -x "$BIN_DIR/ldk-server" || ! -x "$BIN_DIR/ldk-server-mcp" ]]; then
 	echo "Missing required binaries under $BIN_DIR" >&2
 	exit 1
@@ -50,6 +84,19 @@ if [[ ! -f "$CONFIG_PATH" ]]; then
 	echo "Missing $CONFIG_PATH; copy config.example.toml to config.toml first" >&2
 	exit 1
 fi
+
+NETWORK="$(config_value "node.network")"
+NETWORK="${NETWORK:-bitcoin}"
+
+DATA_DIR="$(config_value "storage.disk.dir_path")"
+DATA_DIR="${DATA_DIR:-~/.ldk-server-agent-wallet/data}"
+DATA_DIR="$(expand_path "$DATA_DIR")"
+
+NETWORK_DIR="$DATA_DIR/$NETWORK"
+TLS_CERT_PATH="$DATA_DIR/tls.crt"
+API_KEY_FILE="$NETWORK_DIR/api_key"
+
+mkdir -p "$BIN_DIR" "$RUN_DIR" "$DATA_DIR"
 
 cd "$ROOT_DIR"
 

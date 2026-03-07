@@ -46,6 +46,8 @@ The runtime bundle expects these local paths:
    - `ldk-server-mcp`
 3. Copy `config.example.toml` to `config.toml`.
 4. Edit `config.toml`:
+   - set `storage.disk.dir_path` to the data directory the user wants to use
+   - if no data directory is provided, default to `~/.ldk-server-agent-wallet/data`
    - set an Esplora server, or keep the default `https://mempool.bitcoin.ninja/api`
    - if LSPS2 client details are available, uncomment and fill in the
      `[liquidity.lsps2_client]` section
@@ -94,6 +96,7 @@ You should get a JSON-RPC response listing the exposed MCP tools.
 
 ## Configuration defaults
 
+- Default data directory: `~/.ldk-server-agent-wallet/data`
 - Default Esplora URL: `https://mempool.bitcoin.ninja/api`
 - LSPS2 client configuration: optional; keep it commented out unless the user provides:
   - `node_pubkey`

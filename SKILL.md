@@ -23,13 +23,21 @@ Create a self-contained bundle with:
 Ask for:
 
 1. The target directory for the wallet bundle.
-2. The Esplora server URL.
-3. Optional LSPS2 client details:
+2. The data directory the wallet should use.
+3. The Esplora server URL.
+4. Optional LSPS2 client details:
    - `node_pubkey`
    - `address`
    - optional `token`
 
 ## Defaults
+
+- If the user does not provide a data directory, set:
+
+```toml
+[storage.disk]
+dir_path = "~/.ldk-server-agent-wallet/data"
+```
 
 - If the user does not provide an Esplora server, set:
 
@@ -68,11 +76,12 @@ wallet-dir/
 3. Build `ldk-server-mcp` from `ldk-server-mcp`.
 4. Install the three binaries into `wallet-dir/bin/`.
 5. Copy `config.example.toml` to `config.toml`.
-6. Fill in the Esplora URL.
-7. If the user supplied LSPS2 settings, uncomment and fill in `[liquidity.lsps2_client]`.
-8. If not, leave `[liquidity.lsps2_client]` commented out.
-9. Start the bundle through `./run-ldk-server-mcp`.
-10. Validate with a `tools/list` JSON-RPC request.
+6. Fill in the chosen data directory, or default to `~/.ldk-server-agent-wallet/data`.
+7. Fill in the Esplora URL.
+8. If the user supplied LSPS2 settings, uncomment and fill in `[liquidity.lsps2_client]`.
+9. If not, leave `[liquidity.lsps2_client]` commented out.
+10. Start the bundle through `./run-ldk-server-mcp`.
+11. Validate with a `tools/list` JSON-RPC request.
 
 ## Validation command
 

@@ -3,7 +3,7 @@ network = "bitcoin"
 rest_service_address = "127.0.0.1:3032"
 
 [storage.disk]
-dir_path = "./data"
+dir_path = "~/.ldk-server-agent-wallet/data"
 
 [esplora]
 server_url = "https://mempool.bitcoin.ninja/api"
