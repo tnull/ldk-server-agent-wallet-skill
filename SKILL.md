@@ -126,7 +126,7 @@ printf '%s\n' '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}' | ./r
 - `run-ldk-server-mcp` automatically starts `ldk-server` if it is not already running.
 - The wrapper waits for the generated TLS cert and API key, then exports:
   - `LDK_BASE_URL`
-  - `LDK_API_KEY`
+  - `LDK_API_KEY` — the raw `api_key` file is **binary** (32 bytes); it must be **hex-encoded** before export (e.g., `xxd -p -c 256 api_key | tr -d '\n'`).
   - `LDK_TLS_CERT_PATH`
 - The script derives its root directory from its own location, so it can be reused in any folder.
 - Leave listening addresses and node aliases unset; this setup is outbound-only and should not expect inbound peer connections.
