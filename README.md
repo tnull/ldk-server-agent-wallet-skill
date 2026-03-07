@@ -49,12 +49,13 @@ The runtime bundle expects these local paths:
    - `ldk-server-mcp`
 3. Copy `config.example.toml` to `config.toml`.
 4. Edit `config.toml`:
-    - confirm the user really wants to run on mainnet before keeping `network = "bitcoin"`
-    - if the user wants `signet` or `mutinynet`, set `network = "signet"`
-    - set `storage.disk.dir_path` to the data directory the user wants to use
-    - if no data directory is provided, default to `~/.ldk-server-agent-wallet/data`
-    - set an Esplora server, or keep the default for the selected network:
-      - mainnet: `https://mempool.bitcoin.ninja/api`
+     - confirm the user really wants to run on mainnet before keeping `network = "bitcoin"`
+     - if the user wants `signet` or `mutinynet`, set `network = "signet"`
+     - omit any listening addresses and node aliases, since this bundle should not expect inbound connections
+     - set `storage.disk.dir_path` to the data directory the user wants to use
+     - if no data directory is provided, default to `~/.ldk-server-agent-wallet/data`
+     - set an Esplora server, or keep the default for the selected network:
+       - mainnet: `https://mempool.bitcoin.ninja/api`
       - signet / mutinynet: `https://mutinynet.com/api`
     - if LSPS2 client details are available, uncomment and fill in the
       `[liquidity.lsps2_client]` section
@@ -115,6 +116,7 @@ also be rendered as QR codes in the terminal.
 - Default data directory: `~/.ldk-server-agent-wallet/data`
 - Default Esplora URL on mainnet: `https://mempool.bitcoin.ninja/api`
 - Default Esplora URL on signet / mutinynet: `https://mutinynet.com/api`
+- Omit listening addresses and node aliases: this setup should not expect inbound connections
 - Debug log location: `<storage.disk.dir_path>/<network>/ldk-server.log`
 - QR recommendation: install `qrencode`, and show invoices, offers, and Bitcoin addresses as QR codes in addition to printing the raw strings
 - LSPS2 client configuration: optional; keep it commented out unless the user provides:

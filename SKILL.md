@@ -104,14 +104,15 @@ wallet-dir/
 6. Set the network:
    - keep `network = "bitcoin"` only after explicit mainnet confirmation
    - set `network = "signet"` for signet or mutinynet
-7. Fill in the chosen data directory, or default to `~/.ldk-server-agent-wallet/data`.
-8. Fill in the Esplora URL, defaulting by network.
-9. If the user supplied LSPS2 settings, uncomment and fill in `[liquidity.lsps2_client]`.
-10. If not, leave `[liquidity.lsps2_client]` commented out.
-11. Start the bundle through `./run-ldk-server-mcp`.
-12. Validate with a `tools/list` JSON-RPC request.
-13. If something goes wrong, inspect the `ldk-server` log file under `<storage.disk.dir_path>/<network>/ldk-server.log`.
-14. Recommend installing `qrencode` and, when possible, render invoices, offers, and Bitcoin addresses as QR codes in addition to printing the raw strings.
+7. Omit any listening addresses and node aliases, since this wallet should not expect inbound connections.
+8. Fill in the chosen data directory, or default to `~/.ldk-server-agent-wallet/data`.
+9. Fill in the Esplora URL, defaulting by network.
+10. If the user supplied LSPS2 settings, uncomment and fill in `[liquidity.lsps2_client]`.
+11. If not, leave `[liquidity.lsps2_client]` commented out.
+12. Start the bundle through `./run-ldk-server-mcp`.
+13. Validate with a `tools/list` JSON-RPC request.
+14. If something goes wrong, inspect the `ldk-server` log file under `<storage.disk.dir_path>/<network>/ldk-server.log`.
+15. Recommend installing `qrencode` and, when possible, render invoices, offers, and Bitcoin addresses as QR codes in addition to printing the raw strings.
 
 ## Validation command
 
@@ -127,5 +128,6 @@ printf '%s\n' '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}' | ./r
   - `LDK_API_KEY`
   - `LDK_TLS_CERT_PATH`
 - The script derives its root directory from its own location, so it can be reused in any folder.
+- Leave listening addresses and node aliases unset; this setup is outbound-only and should not expect inbound peer connections.
 - `ldk-server` logs live under `<storage.disk.dir_path>/<network>/ldk-server.log`.
 - `qrencode` is the preferred terminal QR renderer for invoices, offers, and on-chain addresses.
