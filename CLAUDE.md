@@ -25,8 +25,9 @@ This repository is a reusable runtime bundle for `ldk-server` plus `ldk-server-m
 - Ask the user for an Esplora server. If they do not provide one, default to `https://mempool.bitcoin.ninja/api`.
 - Ask the user for LSPS2 client details. If they do not provide them, leave the `[liquidity.lsps2_client]` section commented out.
 - Upstream repositories to use:
-  - `https://github.com/lightningdevkit/ldk-server`
-  - `https://github.com/tnull/ldk-server-mcp`
+  - `https://github.com/tnull/ldk-server/tree/2026-03-lsps2-client-support`
+  - `https://github.com/tnull/ldk-server-mcp/tree/2026-03-lsps2-client-support`
+- These branch references are the current LSPS2-capable sources and should be preferred until the work lands on default branches.
 
 ## Common commands
 

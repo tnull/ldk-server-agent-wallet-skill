@@ -16,8 +16,11 @@ with locally built binaries, configured for a specific node, and launched via
 
 ## Upstream repositories
 
-- `ldk-server`: `https://github.com/lightningdevkit/ldk-server`
-- `ldk-server-mcp`: `https://github.com/tnull/ldk-server-mcp`
+- `ldk-server`: `https://github.com/tnull/ldk-server/tree/2026-03-lsps2-client-support`
+- `ldk-server-mcp`: `https://github.com/tnull/ldk-server-mcp/tree/2026-03-lsps2-client-support`
+
+These branch references are temporary and should be used while the LSPS2 client-support
+work has not yet landed on the default branches.
 
 ## Directory layout
 
@@ -64,7 +67,7 @@ The runtime bundle expects these local paths:
 ### `ldk-server`
 
 ```bash
-git clone https://github.com/lightningdevkit/ldk-server
+git clone --branch 2026-03-lsps2-client-support https://github.com/tnull/ldk-server
 cd ldk-server
 cargo build --release -p ldk-server -p ldk-server-cli
 ```
@@ -72,7 +75,7 @@ cargo build --release -p ldk-server -p ldk-server-cli
 ### `ldk-server-mcp`
 
 ```bash
-git clone https://github.com/tnull/ldk-server-mcp
+git clone --branch 2026-03-lsps2-client-support https://github.com/tnull/ldk-server-mcp
 cd ldk-server-mcp
 cargo build --release
 ```

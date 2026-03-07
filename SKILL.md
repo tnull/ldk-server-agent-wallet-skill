@@ -15,8 +15,11 @@ Create a self-contained bundle with:
 
 ## Upstream repositories
 
-- `ldk-server`: `https://github.com/lightningdevkit/ldk-server`
-- `ldk-server-mcp`: `https://github.com/tnull/ldk-server-mcp`
+- `ldk-server`: `https://github.com/tnull/ldk-server/tree/2026-03-lsps2-client-support`
+- `ldk-server-mcp`: `https://github.com/tnull/ldk-server-mcp/tree/2026-03-lsps2-client-support`
+
+Use these LSPS2 support branches for now. Do not fall back to the default branches until
+the LSPS2 client support work has landed there.
 
 ## Questions to ask the user
 
@@ -79,7 +82,7 @@ wallet-dir/
 
 ## Procedure
 
-1. Clone or use local checkouts of the two upstream repositories.
+1. Clone or use local checkouts of the two LSPS2 support branches.
 2. Build `ldk-server` and `ldk-server-cli` from `ldk-server`.
 3. Build `ldk-server-mcp` from `ldk-server-mcp`.
 4. Install the three binaries into `wallet-dir/bin/`.
