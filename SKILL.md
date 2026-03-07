@@ -122,6 +122,7 @@ printf '%s\n' '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}' | ./r
 
 ## Notes
 
+- `ldk-server` takes the config path as a **positional** argument (`ldk-server <config_path>`), not as a `--config` flag.
 - `run-ldk-server-mcp` automatically starts `ldk-server` if it is not already running.
 - The wrapper waits for the generated TLS cert and API key, then exports:
   - `LDK_BASE_URL`
