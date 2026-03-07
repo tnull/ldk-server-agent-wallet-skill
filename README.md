@@ -65,6 +65,11 @@ The runtime bundle expects these local paths:
 ./run-ldk-server-mcp
 ```
 
+For debugging, check the `ldk-server` log file under the configured data directory:
+
+- mainnet: `<storage.disk.dir_path>/bitcoin/ldk-server.log`
+- signet / mutinynet: `<storage.disk.dir_path>/signet/ldk-server.log`
+
 ## Building upstream binaries
 
 ### `ldk-server`
@@ -101,12 +106,17 @@ printf '%s\n' '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}' | ./r
 
 You should get a JSON-RPC response listing the exposed MCP tools.
 
+For a better receive flow, install `qrencode` so invoices, offers, and Bitcoin addresses can
+also be rendered as QR codes in the terminal.
+
 ## Configuration defaults
 
 - Mainnet safety check: agents should explicitly confirm that the user wants `network = "bitcoin"`
 - Default data directory: `~/.ldk-server-agent-wallet/data`
 - Default Esplora URL on mainnet: `https://mempool.bitcoin.ninja/api`
 - Default Esplora URL on signet / mutinynet: `https://mutinynet.com/api`
+- Debug log location: `<storage.disk.dir_path>/<network>/ldk-server.log`
+- QR recommendation: install `qrencode`, and show invoices, offers, and Bitcoin addresses as QR codes in addition to printing the raw strings
 - LSPS2 client configuration: optional; keep it commented out unless the user provides:
   - `node_pubkey`
   - `address`

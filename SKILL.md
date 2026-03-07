@@ -110,6 +110,8 @@ wallet-dir/
 10. If not, leave `[liquidity.lsps2_client]` commented out.
 11. Start the bundle through `./run-ldk-server-mcp`.
 12. Validate with a `tools/list` JSON-RPC request.
+13. If something goes wrong, inspect the `ldk-server` log file under `<storage.disk.dir_path>/<network>/ldk-server.log`.
+14. Recommend installing `qrencode` and, when possible, render invoices, offers, and Bitcoin addresses as QR codes in addition to printing the raw strings.
 
 ## Validation command
 
@@ -125,3 +127,5 @@ printf '%s\n' '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}' | ./r
   - `LDK_API_KEY`
   - `LDK_TLS_CERT_PATH`
 - The script derives its root directory from its own location, so it can be reused in any folder.
+- `ldk-server` logs live under `<storage.disk.dir_path>/<network>/ldk-server.log`.
+- `qrencode` is the preferred terminal QR renderer for invoices, offers, and on-chain addresses.

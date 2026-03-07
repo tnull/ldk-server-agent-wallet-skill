@@ -25,6 +25,9 @@ This repository is a reusable runtime bundle for `ldk-server` plus `ldk-server-m
 - Ask the user for the runtime data directory. If they do not provide one, default to `~/.ldk-server-agent-wallet/data`.
 - Ask the user for an Esplora server. If they do not provide one, default to `https://mempool.bitcoin.ninja/api` on mainnet or `https://mutinynet.com/api` on signet / mutinynet.
 - Ask the user for LSPS2 client details. If they do not provide them, leave the `[liquidity.lsps2_client]` section commented out.
+- When debugging, check `ldk-server` logs under `<storage.disk.dir_path>/<network>/ldk-server.log`.
+- Recommend installing `qrencode` for terminal QR rendering.
+- Always try to show invoices, offers, and Bitcoin addresses as QR codes in addition to printing the raw strings.
 - Upstream repositories to use:
   - `https://github.com/tnull/ldk-server/tree/2026-03-lsps2-client-support`
   - `https://github.com/tnull/ldk-server-mcp/tree/2026-03-lsps2-client-support`
