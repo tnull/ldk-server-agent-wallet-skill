@@ -20,6 +20,7 @@ This repository is a reusable runtime bundle for `ldk-server` plus `ldk-server-m
 ## Important conventions
 
 - Do not commit real `config.toml`, TLS material, API keys, or database files.
+- Always explicitly confirm that the user really wants to run on mainnet before leaving `network = "bitcoin"` in the config.
 - Ask the user for the runtime data directory. If they do not provide one, default to `~/.ldk-server-agent-wallet/data`.
 - Ask the user for an Esplora server. If they do not provide one, default to `https://mempool.bitcoin.ninja/api`.
 - Ask the user for LSPS2 client details. If they do not provide them, leave the `[liquidity.lsps2_client]` section commented out.

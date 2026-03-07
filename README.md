@@ -46,6 +46,7 @@ The runtime bundle expects these local paths:
    - `ldk-server-mcp`
 3. Copy `config.example.toml` to `config.toml`.
 4. Edit `config.toml`:
+   - confirm the user really wants to run on mainnet before keeping `network = "bitcoin"`
    - set `storage.disk.dir_path` to the data directory the user wants to use
    - if no data directory is provided, default to `~/.ldk-server-agent-wallet/data`
    - set an Esplora server, or keep the default `https://mempool.bitcoin.ninja/api`
@@ -96,6 +97,7 @@ You should get a JSON-RPC response listing the exposed MCP tools.
 
 ## Configuration defaults
 
+- Mainnet safety check: agents should explicitly confirm that the user wants `network = "bitcoin"`
 - Default data directory: `~/.ldk-server-agent-wallet/data`
 - Default Esplora URL: `https://mempool.bitcoin.ninja/api`
 - LSPS2 client configuration: optional; keep it commented out unless the user provides:
