@@ -25,7 +25,7 @@ the LSPS2 client support work has landed there.
 
 Ask for:
 
-1. Whether they really want to run on mainnet.
+1. Which network they want to use, and explicitly confirm if they really want mainnet.
 2. The target directory for the wallet bundle.
 3. The data directory the wallet should use.
 4. The Esplora server URL.
@@ -43,6 +43,13 @@ Ask for:
 network = "bitcoin"
 ```
 
+- If the user says `signet` or `mutinynet`, set:
+
+```toml
+[node]
+network = "signet"
+```
+
 - If the user does not provide a data directory, set:
 
 ```toml
@@ -50,11 +57,18 @@ network = "bitcoin"
 dir_path = "~/.ldk-server-agent-wallet/data"
 ```
 
-- If the user does not provide an Esplora server, set:
+- If the user does not provide an Esplora server on mainnet, set:
 
 ```toml
 [esplora]
 server_url = "https://mempool.bitcoin.ninja/api"
+```
+
+- If the user does not provide an Esplora server on signet or mutinynet, set:
+
+```toml
+[esplora]
+server_url = "https://mutinynet.com/api"
 ```
 
 - If the user does not provide LSPS2 client details, leave the LSPS2 section disabled:
@@ -87,9 +101,11 @@ wallet-dir/
 3. Build `ldk-server-mcp` from `ldk-server-mcp`.
 4. Install the three binaries into `wallet-dir/bin/`.
 5. Copy `config.example.toml` to `config.toml`.
-6. Confirm whether mainnet is really intended before keeping `network = "bitcoin"`.
+6. Set the network:
+   - keep `network = "bitcoin"` only after explicit mainnet confirmation
+   - set `network = "signet"` for signet or mutinynet
 7. Fill in the chosen data directory, or default to `~/.ldk-server-agent-wallet/data`.
-8. Fill in the Esplora URL.
+8. Fill in the Esplora URL, defaulting by network.
 9. If the user supplied LSPS2 settings, uncomment and fill in `[liquidity.lsps2_client]`.
 10. If not, leave `[liquidity.lsps2_client]` commented out.
 11. Start the bundle through `./run-ldk-server-mcp`.

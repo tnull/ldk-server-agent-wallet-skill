@@ -49,12 +49,15 @@ The runtime bundle expects these local paths:
    - `ldk-server-mcp`
 3. Copy `config.example.toml` to `config.toml`.
 4. Edit `config.toml`:
-   - confirm the user really wants to run on mainnet before keeping `network = "bitcoin"`
-   - set `storage.disk.dir_path` to the data directory the user wants to use
-   - if no data directory is provided, default to `~/.ldk-server-agent-wallet/data`
-   - set an Esplora server, or keep the default `https://mempool.bitcoin.ninja/api`
-   - if LSPS2 client details are available, uncomment and fill in the
-     `[liquidity.lsps2_client]` section
+    - confirm the user really wants to run on mainnet before keeping `network = "bitcoin"`
+    - if the user wants `signet` or `mutinynet`, set `network = "signet"`
+    - set `storage.disk.dir_path` to the data directory the user wants to use
+    - if no data directory is provided, default to `~/.ldk-server-agent-wallet/data`
+    - set an Esplora server, or keep the default for the selected network:
+      - mainnet: `https://mempool.bitcoin.ninja/api`
+      - signet / mutinynet: `https://mutinynet.com/api`
+    - if LSPS2 client details are available, uncomment and fill in the
+      `[liquidity.lsps2_client]` section
    - if LSPS2 client details are not available, leave that section commented out
 5. Start the MCP entrypoint:
 
@@ -102,7 +105,8 @@ You should get a JSON-RPC response listing the exposed MCP tools.
 
 - Mainnet safety check: agents should explicitly confirm that the user wants `network = "bitcoin"`
 - Default data directory: `~/.ldk-server-agent-wallet/data`
-- Default Esplora URL: `https://mempool.bitcoin.ninja/api`
+- Default Esplora URL on mainnet: `https://mempool.bitcoin.ninja/api`
+- Default Esplora URL on signet / mutinynet: `https://mutinynet.com/api`
 - LSPS2 client configuration: optional; keep it commented out unless the user provides:
   - `node_pubkey`
   - `address`
