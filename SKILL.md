@@ -100,7 +100,7 @@ wallet-dir/
 2. Build `ldk-server` and `ldk-server-cli` from `ldk-server`.
 3. Build `ldk-server-mcp` from `ldk-server-mcp`.
 4. Install the three binaries into `wallet-dir/bin/`.
-5. Copy `config.example.toml` to `config.toml`.
+5. Copy this repository's `config.example.toml` to `config.toml`; do not start from the upstream `ldk-server` config example.
 6. Set the network:
    - keep `network = "bitcoin"` only after explicit mainnet confirmation
    - set `network = "signet"` for signet or mutinynet

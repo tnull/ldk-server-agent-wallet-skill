@@ -47,7 +47,7 @@ The runtime bundle expects these local paths:
    - `ldk-server`
    - `ldk-server-cli`
    - `ldk-server-mcp`
-3. Copy `config.example.toml` to `config.toml`.
+3. Copy this repository's `config.example.toml` to `config.toml`; do not start from the upstream `ldk-server` config example.
 4. Edit `config.toml`:
      - confirm the user really wants to run on mainnet before keeping `network = "bitcoin"`
      - if the user wants `signet` or `mutinynet`, set `network = "signet"`

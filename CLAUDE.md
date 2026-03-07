@@ -20,6 +20,7 @@ This repository is a reusable runtime bundle for `ldk-server` plus `ldk-server-m
 ## Important conventions
 
 - Do not commit real `config.toml`, TLS material, API keys, or database files.
+- When creating `config.toml`, always start from this repository's `config.example.toml`, not the upstream `ldk-server` config example.
 - Always explicitly confirm that the user really wants to run on mainnet before leaving `network = "bitcoin"` in the config.
 - If the user wants signet or mutinynet, set `network = "signet"` and default Esplora to `https://mutinynet.com/api` unless they provide a different server.
 - Ask the user for the runtime data directory. If they do not provide one, default to `~/.ldk-server-agent-wallet/data`.
