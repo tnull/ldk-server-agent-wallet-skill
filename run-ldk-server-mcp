@@ -101,10 +101,27 @@ mkdir -p "$BIN_DIR" "$RUN_DIR" "$DATA_DIR"
 cd "$ROOT_DIR"
 
 if ! port_open; then
+	LOCK_OWNER="$LOCK_DIR/owner.pid"
+	attempts=0
 	while ! mkdir "$LOCK_DIR" >/dev/null 2>&1; do
+		if [[ -f "$LOCK_OWNER" ]]; then
+			lock_pid=$(cat "$LOCK_OWNER" 2>/dev/null || true)
+			if [[ -n "$lock_pid" ]] && ! kill -0 "$lock_pid" >/dev/null 2>&1; then
+				rm -rf "$LOCK_DIR"
+				continue
+			fi
+		else
+			# Lock dir exists but no owner file — treat as stale after a grace period
+			attempts=$((attempts + 1))
+			if (( attempts > 15 )); then
+				rm -rf "$LOCK_DIR"
+				continue
+			fi
+		fi
 		sleep 0.2
 	done
-	trap 'rmdir "$LOCK_DIR" >/dev/null 2>&1 || true' EXIT
+	echo $$ >"$LOCK_OWNER"
+	trap 'rm -rf "$LOCK_DIR" 2>/dev/null || true' EXIT
 
 	if ! port_open; then
 		if [[ -f "$PID_FILE" ]]; then
